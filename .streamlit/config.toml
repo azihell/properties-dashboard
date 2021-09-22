@@ -1,0 +1,13 @@
+# [theme]
+# primaryColor = "#0663c7"
+# backgroundColor = "#8ac2ff"
+# secondaryBackgroundColor = "#ffffff"
+# textColor = "#262730"
+# font = "sans serif"
+
+[theme]
+primaryColor="#d33682"
+backgroundColor="#002b36"
+secondaryBackgroundColor="#586e75"
+textColor="#fafafa"
+font="sans serif"
