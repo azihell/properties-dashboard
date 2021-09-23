@@ -1,9 +1,10 @@
 # coding: utf-8
 
-from numpy import e, integer
-import streamlit as st
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import pydeck as pdk
+import streamlit as st
 
 # Magic markdown usage
 """# Welcome to price mapping!"""
@@ -16,12 +17,18 @@ st.markdown("---")
 """Click the '+' to expand the sections and perform the data analysis."""
 # Creates an expander element where a .csv file is uploaded
 with st.expander('Load your .csv data file here!', expanded=True):
-  img_file_buffer = st.file_uploader("Pick your file", type=[".csv"])
+  data_file = st.file_uploader("Pick your file", type=[".csv"])
 
 # Loads a .csv into a dataframe. Limits the columns and formats them.
 def load_mapping_df():
-  data = pd.read_csv(img_file_buffer, decimal=',',
+  data = pd.read_csv(data_file, decimal=",",
                      usecols=['Property_ID', 'Price', 'Longitude', 'Latitude'])
+  format_mapping={'Property_ID': '{:.0f}',
+                  'Price': 'R$ {:,.2f}',
+                  'Longitude': '{:,.2f}'}
+  # for key, value in format_mapping.items():
+  #   data[key] = data[key].apply(value.format)
+  # data['Property_ID'] = data['Property_ID'].astype(int)
   data['Price'] = data['Price'].astype(float).round(2)
   data['Latitude'] = data['Latitude'].astype(float).round(6)
   data['Longitude'] = data['Longitude'].astype(float).round(6)
@@ -30,16 +37,13 @@ def load_mapping_df():
 # Saves dataframe into a variable and drops rows containing '<NA>'
 # since every column has absolute priority.
 main_df = load_mapping_df()
-main_df.style.format(precision=2, na_rep='--', thousands=":.")
 no_na_df = main_df.dropna()
-
-# Prints dataframe on the app
-st.write(main_df)
+st.write(no_na_df.style.format({'Price': "R$ {:,.2f}"}))
 
 # Begins a portion of code concerning an 'expander' element
 with st.expander('Dataframe information'):
   # Definition of three columns and subsequent column content
-  c1, c2, c3 = st.columns([1.5,2,2])
+  c1, c2, c3 = st.columns([1.5,2,3])
   with c1:
     st.metric(label="Number or properties", value=len(main_df['Property_ID']))
   with c2:
@@ -47,8 +51,14 @@ with st.expander('Dataframe information'):
               int(max(main_df['Latitude'].isna().sum(),
                       main_df['Latitude'].isna().sum())))
   with c3:
-    st.metric('Average price (R$)', main_df['Price'].mean().round(2))
-
+    avg = main_df['Price'].mean()
+    st.metric('Average price', f"R$ {avg:,.2f}")
+  
+  arr = main_df['Price']/1000
+  fig, ax = plt.subplots()
+  ax.hist(arr, bins=40)
+  st.pyplot(fig)
+  
 # Mean coordinates that are used to center the properties on the map  
 mean_longitude = no_na_df['Longitude'].mean().round(6)
 mean_latitude = no_na_df['Latitude'].mean().round(6)
@@ -98,5 +108,6 @@ st.pydeck_chart(pdk.Deck(
     tooltip = {
     "html": "ID: <i>{Property_ID}</i><br/> R$ <b>{Price}</b>",
     "style": {"background": "blue", "color": "white", "font-family": '"Helvetica Neue", Arial', "z-index": "10"},
-}
-))
+    }
+  )
+)
