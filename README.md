@@ -16,7 +16,7 @@ A color code to help locating prices according to price ranges was created (the 
 Hovering the mouse over a property will give away it's ID and it's price.
 
 ## Look
-![](.github/Price%20mapper.png)
+![](.github/Price_mapper.png)
 
 ## Future features
 There's also a few metrics like average price, number of properties found, and number of properties who did not get mapped because they lack coordinate information.
