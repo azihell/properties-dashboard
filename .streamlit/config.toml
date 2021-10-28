@@ -6,8 +6,8 @@
 # font = "sans serif"
 
 [theme]
-primaryColor="#d33682"
+primaryColor="#2cc5ff"
 backgroundColor="#002b36"
 secondaryBackgroundColor="#586e75"
 textColor="#fafafa"
-font="sans serif"
+font="condensed"
