@@ -4,7 +4,7 @@ My Streamlit app for properties pricing data visualization
 ## Intro
 
 Streamlit is a great tool to develop data visualization. It's written in Python which is also a language widely used in data analysis and engineering.
-What you'll see here is my take on a way to to quickly find properties by their prices in a city.
+What you'll see here is my take on a way to quickly find properties of interest by glancing their prices in a city map.
 The prices were obtained by means of *scraping a certain website*, in the beginning of October 21'. To get them in an automated manner, a spider was built with the Python Scrapy module and it generated a .csv file, after submitting the scraped data through a few pipelines.
 
 ## Usage
